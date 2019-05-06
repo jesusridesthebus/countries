@@ -10,8 +10,8 @@ namespace Countries.Controllers
     [HttpGet("/countries")]
     public ActionResult Index()
     {
-       //List<Country> viewCountry = Country.GetAll();
-       return View();
+       List<Country> viewCountry = Country.GetAll();
+       return View(viewCountry);
     }
 
     [HttpGet("/countries/{countryId}")]
