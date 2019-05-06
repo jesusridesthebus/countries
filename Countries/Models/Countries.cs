@@ -1,47 +1,69 @@
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
 
 namespace Countries.Models
 {
-  public class Place
+  public class Country
   {
-    private string _description;
-    private static List<Place> _instances = new List<Place> {};
+    public string IdCode {get; set;}
+    public string Name {get; set;}
+    public string Continent {get; set;}
+    public string Region {get; set;}
+    public int IndepYear {get; set;}
+    public int Population {get; set;}
+    public int LifeExpectancy {get; set;}
+    public int GNP {get; set;}
+    public string GovernmentForm {get; set;}
+    public int Code2 {get; set;}
 
-    public Place (string description)
+
+    public Country (string name, string id)
     {
-      _description = description;
-      _instances.Add(this);
-      _id = _instances.Count;
+      Name = name;
+      IdCode = id;
     }
 
-    public string GetDescription()
+    public static List<Country> GetAll()
     {
-      return _description;
+      List<Country> allCountries = new List<Country> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM country;";
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        string countryId = rdr.GetString(0);
+        string countryDescription = rdr.GetString(1);
+        Country newCountry = new Country(countryDescription, countryId);
+        allCountries.Add(newCountry);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allCountries;
     }
-
-    public void SetDescription(string newDescription)
+    public static Country Find(string id)
     {
-      _description = newDescription;
-    }
-
-    public static List<Place> GetAll()
-    {
-      return _instances;
-    }
-
-    public static void ClearAll()
-    {
-      _instances.Clear();
-    }
-
-    public int GetId()
-    {
-      return _id;
-    }
-
-    public static Item Find(int searchId)
-    {
-      return _instances[searchId-1];
+      Country selectedCountry = new Country("place", "ANE");
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM country WHERE code ='" + id + "' ;";
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      rdr.Read();
+      // int countryId = rdr.GetInt32(0);
+      // string countryDescription = rdr.GetString(1);
+      // Country newCountry = new Country(countryDescription, countryId);
+      // allCountries.Add(newCountry);
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return selectedCountry;
     }
 
   }

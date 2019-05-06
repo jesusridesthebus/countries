@@ -6,6 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Countries
 {
+
+  public static class DBConfiguration
+  {
+    public static string ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=world;";
+  }
+
+
   public class Startup
   {
     public Startup(IHostingEnvironment env)
@@ -21,7 +28,7 @@ namespace Countries
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
-    }
+    }    
 
     public void Configure(IApplicationBuilder app)
     {

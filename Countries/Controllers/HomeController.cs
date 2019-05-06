@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Countries.Models;
+using System.Collections.Generic;
 
 namespace Countries.Controllers
 {
@@ -8,10 +9,10 @@ namespace Countries.Controllers
 
     [HttpGet("/")]
     public ActionResult Index()
-   {
-     Item starterItem = new Item("Add first item to To Do List");
-     return View(starterItem);
-   }
+    {
+      List<Country> allCountries = new List<Country>();
+      return View(allCountries);
+    }
 
   }
 }
